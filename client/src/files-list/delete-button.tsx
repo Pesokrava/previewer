@@ -1,12 +1,20 @@
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
-import { useState } from 'react';
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  Alert,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+} from "@mui/material";
+import { useState } from "react";
 
-import { deleteFile } from '../connectors';
+import { deleteFile } from "../connectors";
 
 export default function DeleteButton({ selectedFile, onDelete }) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleDelete = async () => {
     if (onDelete) {
@@ -22,14 +30,17 @@ export default function DeleteButton({ selectedFile, onDelete }) {
   return (
     <>
       <IconButton
-        onClick={e => {
+        onClick={(e) => {
           setIsDeleteDialogOpen(true);
           e.stopPropagation();
         }}
       >
         <DeleteIcon />
       </IconButton>
-      <Dialog open={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+      >
         <DialogTitle>Delete File</DialogTitle>
 
         <DialogContent>

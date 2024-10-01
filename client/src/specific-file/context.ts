@@ -1,9 +1,12 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
 interface IColumnNamesContext {
   columnNames: string[];
   setColumnNames: (names: string[]) => void;
 }
 
-const ColumnNamesContext = createContext<IColumnNamesContext>({ columnNames: [], setColumnNames: () => {} });
+const ColumnNamesContext = createContext<IColumnNamesContext>({
+  columnNames: [],
+  setColumnNames: () => {},
+});
 export default ColumnNamesContext;

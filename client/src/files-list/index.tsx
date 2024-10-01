@@ -1,5 +1,5 @@
-import RefreshIcon from '@mui/icons-material/Refresh';
-import TableChartIcon from '@mui/icons-material/TableChart';
+import RefreshIcon from "@mui/icons-material/Refresh";
+import TableChartIcon from "@mui/icons-material/TableChart";
 import {
   Alert,
   Box,
@@ -13,12 +13,12 @@ import {
   ListItemText,
   Stack,
   Typography,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
+} from "@mui/material";
+import { useEffect, useState } from "react";
 
-import { fetchFiles, ICSVFiles } from '../connectors';
-import DeleteButton from './delete-button';
-import CSVFileUploadButton from './upload-button';
+import { fetchFiles, ICSVFiles } from "../connectors";
+import DeleteButton from "./delete-button";
+import CSVFileUploadButton from "./upload-button";
 
 export interface ISelectFile {
   selectedFile: string | null;
@@ -28,14 +28,14 @@ export interface ISelectFile {
 export default function FileList({ selectedFile, selectFile }: ISelectFile) {
   const [items, setItems] = useState<ICSVFiles[]>([]);
   const [isLoading, setIsLoading] = useState(true); // Track loading state
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const fetchData = async () => {
     try {
       const data = await fetchFiles();
       setItems(data);
     } catch {
-      setError('Failed to fetch files from server');
+      setError("Failed to fetch files from server");
     } finally {
       setIsLoading(false); // Set loading state to false regardless of success or failure
     }
@@ -47,12 +47,12 @@ export default function FileList({ selectedFile, selectFile }: ISelectFile) {
 
   const onRefresh = () => {
     setIsLoading(true);
-    setError('');
+    setError("");
     fetchData();
   };
 
   const onFileDeleted = (file: string) => {
-    setItems(items.filter(item => item.fileName !== file));
+    setItems(items.filter((item) => item.fileName !== file));
     selectFile(null);
   };
 
@@ -62,9 +62,19 @@ export default function FileList({ selectedFile, selectFile }: ISelectFile) {
 
   return (
     <Grid2 spacing={2} width="360px" justifyContent="center">
-      <Grid2 marginBottom="4px" display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Typography variant="h6" padding="10px" sx={{ justifyContent: 'center' }}>
-          Uploaded files{' '}
+      <Grid2
+        marginBottom="4px"
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Typography
+          variant="h6"
+          padding="10px"
+          sx={{ justifyContent: "center" }}
+        >
+          Uploaded files{" "}
         </Typography>
 
         <Stack alignItems="center" direction="row">
@@ -77,7 +87,7 @@ export default function FileList({ selectedFile, selectFile }: ISelectFile) {
 
       <Divider />
 
-      <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
         {isLoading ? (
           <Box margin="5px">
             <LinearProgress></LinearProgress>;
@@ -89,24 +99,27 @@ export default function FileList({ selectedFile, selectFile }: ISelectFile) {
         ) : (
           <nav>
             <List>
-              {items.map(file => (
+              {items.map((file) => (
                 <ListItemButton
                   key={file.fileName}
                   selected={selectedFile === file.fileName}
-                  onClick={e => {
+                  onClick={(e) => {
                     selectFile(file.fileName);
                     e.stopPropagation();
                   }}
                 >
                   <ListItemIcon>
-                    <TableChartIcon sx={{ color: 'green' }} />
+                    <TableChartIcon sx={{ color: "green" }} />
                   </ListItemIcon>
 
                   <ListItemText
-                    sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+                    sx={{ overflow: "hidden", textOverflow: "ellipsis" }}
                     primary={`${file.fileName}.csv`}
                   />
-                  <DeleteButton selectedFile={file.fileName} onDelete={onFileDeleted} />
+                  <DeleteButton
+                    selectedFile={file.fileName}
+                    onDelete={onFileDeleted}
+                  />
                 </ListItemButton>
               ))}
             </List>

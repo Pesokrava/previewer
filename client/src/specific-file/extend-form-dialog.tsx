@@ -36,14 +36,14 @@ export default function ExtendDialog({
   const [submitted, setSubmitted] = useState(false);
   const [doSubmit, setDoSubmit] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState('');
+  const [submitError, setSubmitError] = useState("");
 
   // task checking state
-  const [taskId, setTaskId] = useState('');
+  const [taskId, setTaskId] = useState("");
   const [status, setStatus] = useState<CeleryTaskStatus | null>(null);
   const [doCheck, setDoCheck] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
-  const [taskError, setTaskError] = useState('');
+  const [taskError, setTaskError] = useState("");
 
   // done state
   const [done, setDone] = useState(false);
@@ -56,7 +56,7 @@ export default function ExtendDialog({
         const taskId = await joinData(reqBody);
         setTaskId(taskId);
         setDoCheck(true);
-        setSubmitError('');
+        setSubmitError("");
         setSubmitted(true);
       } catch {
         setSubmitError("Failed to submit join task");
@@ -78,7 +78,7 @@ export default function ExtendDialog({
       try {
         const status = await checkJoinStatus(taskId);
         setStatus(status);
-        setTaskError('');
+        setTaskError("");
         if (DONE_STATUSES.includes(status)) {
           setDone(true);
         }
@@ -98,13 +98,13 @@ export default function ExtendDialog({
     setSubmitted(false);
     setDoSubmit(false);
     setIsSubmitting(false);
-    setSubmitError('');
+    setSubmitError("");
 
     setStatus(null);
-    setTaskId('');
+    setTaskId("");
     setDoCheck(false);
     setIsChecking(false);
-    setTaskError('');
+    setTaskError("");
   };
 
   return (
@@ -121,20 +121,19 @@ export default function ExtendDialog({
               </Stack>
             )}
 
-            {isSubmitting && (
-              <LinearProgress variant="indeterminate" />
-            )}
+            {isSubmitting && <LinearProgress variant="indeterminate" />}
 
             {submitError && !isSubmitting && (
               <Alert severity="error">{submitError}</Alert>
             )}
           </DialogContent>
           <DialogActions>
-            <Button
-              disabled={isSubmitting}
-              onClick={() => setDoSubmit(true)}
-            >
-              {isSubmitting ? "Submitting..." : !submitError ? "Submit": "Retry"}
+            <Button disabled={isSubmitting} onClick={() => setDoSubmit(true)}>
+              {isSubmitting
+                ? "Submitting..."
+                : !submitError
+                  ? "Submit"
+                  : "Retry"}
             </Button>
 
             {!isSubmitting && (
@@ -154,7 +153,7 @@ export default function ExtendDialog({
           {/* second stage task checking */}
           <DialogContent>
             {!done && !isChecking && (
-              <Alert severity="info">{`Task status: ${status ? status.toString(): CeleryTaskStatus.UNKNOWN.toString()}`}</Alert>
+              <Alert severity="info">{`Task status: ${status ? status.toString() : CeleryTaskStatus.UNKNOWN.toString()}`}</Alert>
             )}
 
             {isChecking && <LinearProgress variant="indeterminate" />}
@@ -164,14 +163,13 @@ export default function ExtendDialog({
             )}
 
             {done && (
-              <Alert severity={FAIL_STATUSES.includes(status) ? "error": "success"}>{`Task finished with status: ${status.toString()}`}</Alert>
+              <Alert
+                severity={FAIL_STATUSES.includes(status) ? "error" : "success"}
+              >{`Task finished with status: ${status.toString()}`}</Alert>
             )}
           </DialogContent>
           <DialogActions>
-            <Button
-              disabled={isChecking}
-              onClick={() => setDoCheck(true)}
-            >
+            <Button disabled={isChecking} onClick={() => setDoCheck(true)}>
               {isChecking ? "Checking..." : "Check"}
             </Button>
             {done && (

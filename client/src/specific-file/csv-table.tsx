@@ -10,27 +10,34 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-} from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+} from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
 
-import { fetchFile } from '../connectors';
-import ColumnNamesContext from './context';
+import { fetchFile } from "../connectors";
+import ColumnNamesContext from "./context";
 
-type CSVDataTypes = string | number | boolean | Array<string> | Array<number> | null | undefined;
+type CSVDataTypes =
+  | string
+  | number
+  | boolean
+  | Array<string>
+  | Array<number>
+  | null
+  | undefined;
 type Rows = { index: number; [key: string]: CSVDataTypes }[];
 
 function CsvDataTable({ file }: { file: string }) {
   const [rows, setData] = useState<Rows>([]);
   const [isLoading, setLoading] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [page, setPage] = useState(0);
   const [totalRows, setTotalRows] = useState(0);
   const { setColumnNames } = useContext(ColumnNamesContext);
 
   useEffect(() => {
     const fetchData = async () => {
-      setError('');
+      setError("");
       setLoading(true);
       try {
         const data = await fetchFile(file, rowsPerPage, page * rowsPerPage);
@@ -41,7 +48,7 @@ function CsvDataTable({ file }: { file: string }) {
           setColumnNames(Object.keys(data.rows[0]));
         }
       } catch {
-        setError('Failed to fetch file');
+        setError("Failed to fetch file");
       } finally {
         setLoading(false);
       }
@@ -54,7 +61,9 @@ function CsvDataTable({ file }: { file: string }) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -79,14 +88,17 @@ function CsvDataTable({ file }: { file: string }) {
     <Box overflow="auto" height="100%" width="100%">
       <Divider />
 
-      <TableContainer component={Box} sx={{ overflow: 'initial' }}>
+      <TableContainer component={Box} sx={{ overflow: "initial" }}>
         <Table stickyHeader sx={{ minWidth: 650 }} aria-label="sticky table">
           <TableHead>
             <TableRow key="header">
               {Object.keys(rows[0])
                 .slice(1)
-                .map(columnName => (
-                  <TableCell key={columnName} sx={{ borderBottom: '1px solid', fontWeight: 'bold' }}>
+                .map((columnName) => (
+                  <TableCell
+                    key={columnName}
+                    sx={{ borderBottom: "1px solid", fontWeight: "bold" }}
+                  >
                     {columnName}
                   </TableCell>
                 ))}
@@ -94,12 +106,12 @@ function CsvDataTable({ file }: { file: string }) {
           </TableHead>
 
           <TableBody>
-            {rows.map(row => (
+            {rows.map((row) => (
               <TableRow key={row.index}>
                 {Object.values(row)
                   .slice(1)
                   .map((value, index) => (
-                    <TableCell key={index}>{value || 'null'}</TableCell>
+                    <TableCell key={index}>{value || "null"}</TableCell>
                   ))}
               </TableRow>
             ))}
@@ -117,7 +129,13 @@ function CsvDataTable({ file }: { file: string }) {
         onRowsPerPageChange={handleChangeRowsPerPage}
         showFirstButton
         showLastButton
-        sx={{ position: 'sticky', left: 0, bottom: 0, backgroundColor: 'white', borderTop: '1px solid' }}
+        sx={{
+          position: "sticky",
+          left: 0,
+          bottom: 0,
+          backgroundColor: "white",
+          borderTop: "1px solid",
+        }}
       />
     </Box>
   );

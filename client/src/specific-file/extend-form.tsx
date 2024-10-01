@@ -156,7 +156,10 @@ export default function ExtendForm({ file }: { file: string }) {
             aria-describedby="api-helper-text"
             value={formInputs.newFileName}
             onChange={(event) => {
-              setFormInputs({ ...formInputs, newFileName: event.target.value.replace(".csv", "") });
+              setFormInputs({
+                ...formInputs,
+                newFileName: event.target.value.replace(".csv", ""),
+              });
               setErrors({ ...errors, newFileNameError: "" });
             }}
           />

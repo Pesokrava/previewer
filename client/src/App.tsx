@@ -1,16 +1,16 @@
-import { FindInPage } from '@mui/icons-material';
-import { Box, Divider, Grid2, Stack, Typography } from '@mui/material';
-import { useState } from 'react';
+import { FindInPage } from "@mui/icons-material";
+import { Box, Divider, Grid2, Stack, Typography } from "@mui/material";
+import { useState } from "react";
 
-import FileList from './files-list';
-import Header from './header';
-import SpecificFileComponent from './specific-file';
+import FileList from "./files-list";
+import Header from "./header";
+import SpecificFileComponent from "./specific-file";
 
 export default function App() {
   const [selectedFile, setFile] = useState<string | null>(null);
 
   return (
-    <Box sx={{ width: '100%', height: '90%' }}>
+    <Box sx={{ width: "100%", height: "90%" }}>
       <header>
         <Header></Header>
       </header>
@@ -32,14 +32,22 @@ export default function App() {
 
         <Divider orientation="vertical" />
 
-        <Grid2 size={20} display="flex" flexGrow="1" justifyContent="center" alignItems="center">
+        <Grid2
+          size={20}
+          display="flex"
+          flexGrow="1"
+          justifyContent="center"
+          alignItems="center"
+        >
           {selectedFile !== null ? (
             <SpecificFileComponent file={selectedFile} />
           ) : (
             <Box>
               <Stack alignItems="center" direction="row" gap={2}>
                 <FindInPage />
-                <Typography variant="body1">Select or upload csv file</Typography>
+                <Typography variant="body1">
+                  Select or upload csv file
+                </Typography>
               </Stack>
             </Box>
           )}
