@@ -1,0 +1,68 @@
+version: '2'
+
+services:
+    nginx:
+        restart: always
+        image: nginx:1.27-alpine
+        ports:
+            - 80:80
+        volumes:
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - static_volume:/app/server/static
+    server:
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: ./docker/server/Dockerfile
+        entrypoint: /app/docker/server/server-entrypoint.sh
+        volumes:
+            - static_volume:/app/server/static
+        expose:
+            - 8000     
+        environment:
+            DATABASE_HOST: db
+            DATABASE_USER: postgres
+            DATABASE_NAME: csvpreviewer-db
+            DATABASE_PORT: 5432
+            DATABASE_PASSWORD: ${DB_PASSWORD:-postgres}
+            CELERY_BROKER_URL: "redis://redis:6379/0"
+            CELERY_RESULT_BACKEND: "redis://redis:6379/0"
+    worker:
+        restart: unless-stopped
+        build:
+            context: .
+            dockerfile: ./docker/server/Dockerfile
+        entrypoint: /app/docker/server/worker-entrypoint.sh
+        volumes:
+            - static_volume:/app/server/static
+        environment:
+            DATABASE_HOST: db
+            DATABASE_USER: postgres
+            DATABASE_NAME: csvpreviewer-db
+            DATABASE_PORT: 5432
+            DATABASE_PASSWORD: ${DB_PASSWORD:-postgres}
+            CELERY_BROKER_URL: "redis://redis:6379/0"
+            CELERY_RESULT_BACKEND: "redis://redis:6379/0"
+        depends_on:
+            - server
+            - redis
+    redis:
+        restart: unless-stopped
+        image: redis:7-alpine 
+        expose:
+            - 6379
+    db:
+        image: postgres:17-alpine
+        restart: unless-stopped
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        environment:
+            POSTGRES_DB: csvpreviewer-db
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+            POSTGRES_USER: postgres
+        expose:
+            - 5432
+    
+volumes:
+    static_volume: {}
+    postgres_data: {}

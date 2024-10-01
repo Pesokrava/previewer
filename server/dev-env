@@ -1,0 +1,7 @@
+export BROKER_URL='redis://localhost:6379/0'
+export DEBUG='True'
+export DATABASE_NAME='dev_db'
+export DATABASE_USER='postgres'
+export DATABASE_PASSWORD='postgres'
+export DATABASE_HOST='localhost'
+export DATABASE_PORT='5432'
